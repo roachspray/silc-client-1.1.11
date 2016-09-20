@@ -1,0 +1,347 @@
+commit 2a31f791df84e58f25f694cc17fb4631e544a7a4
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Mon May 12 22:16:44 2014 +0300
+
+    silc-client: SILC Plugin compilation changes
+    
+    Update the README.PLUGIN instructions and include the silc-mime.pl
+    script in installation.
+
+commit ac05bae6310bc7cba3bc07f4c1ee309153e26ebd
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Mon May 12 15:53:16 2014 +0300
+
+    silc-client: fix compilation error
+
+commit 6e6725fe403fbdeefce38f0e39e56aff0cb41d8c
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Sat May 10 17:15:55 2014 +0300
+
+    silc-client: target public key verification better
+    
+    Use the context set by library to show the actual nickname of the client
+    whose public key we are verifying.
+
+commit 725af813951d3c77b38c52ff02bf43bf892370ea
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Sat May 10 14:56:44 2014 +0300
+
+    silc-client: don't show GETKEY public key verification twice
+
+commit 1ea34b3821a3590c5402a55b4e4e69924db734e7
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Sat May 10 14:54:19 2014 +0300
+
+    silc-client: show successful client public key verification
+    
+    When successfully verified client's public key, which now most of the
+    time happens when sending private message for the first time, show it
+    on the screen so user can be sure of it.
+
+commit 071aff87b3b9aa4005ab3012ffd688fe10dcee9e
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Sat May 10 13:51:44 2014 +0300
+
+    silcclient: fix error reporting in silc_client_init
+
+commit 18d69a0a1fec438e241bb4f431506ed59a34066b
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Sat May 10 13:48:33 2014 +0300
+
+    Merge Irssi 0.8.16-rc1
+
+commit 02745be76c1b9cee66b66a5e5bcd79b4b7f6d2a2
+Author: Pekka Riikonen <priikone@silcnet.org>
+Date:   Tue May 6 18:24:58 2014 +0300
+
+    silcclient: handle command timeout error correctly
+    
+    If command which can return a list of entries such as the LIST command
+    timeouts the cmd->status may be something other than SILC_STATUS_OK,
+    ie. _LIST_END for example which then means ERROR_CALLBACK won't update
+    the SILC_STATUS_ERR_TIMEOUT correctly to the cmd context.  This can
+    crash the application handling the command reply.  Clear the cmd->status
+    in case the command timedout.
+
+ .gitignore                                         |     2 -
+ README.CVS                                         |   233 -
+ README.PLUGIN                                      |    64 +-
+ apps/irssi/.cvsignore                              |    38 -
+ apps/irssi/AUTHORS                                 |    21 +-
+ apps/irssi/COPYING                                 |   344 +
+ apps/irssi/ChangeLog                               | 38277 +++++++++++++++++++
+ apps/irssi/Makefile.am                             |    59 +-
+ apps/irssi/NEWS                                    |   271 +-
+ apps/irssi/README                                  |    13 +-
+ apps/irssi/TODO                                    |   195 +-
+ apps/irssi/acconfig.h                              |    22 +-
+ apps/irssi/autogen.sh                              |   122 +-
+ apps/irssi/build-aux/depcomp                       |   707 +
+ apps/irssi/build-aux/install-sh                    |   527 +
+ apps/irssi/build-aux/missing                       |   330 +
+ apps/irssi/configure.in                            |   622 +-
+ apps/irssi/curses.m4                               |    68 +-
+ apps/irssi/default.theme                           |   258 +-
+ apps/irssi/docs/Makefile.am                        |    14 +-
+ apps/irssi/docs/design.txt                         |    12 +-
+ apps/irssi/docs/faq.html                           |     2 +-
+ apps/irssi/docs/help/in/Makefile.am.gen            |     3 +-
+ apps/irssi/docs/help/in/admin.in                   |     6 +-
+ apps/irssi/docs/help/in/bind.in                    |    61 +-
+ apps/irssi/docs/help/in/cat.in                     |     2 +-
+ apps/irssi/docs/help/in/cd.in                      |     2 +-
+ apps/irssi/docs/help/in/clear.in                   |     1 +
+ apps/irssi/docs/help/in/cycle.in                   |     2 +-
+ apps/irssi/docs/help/in/dehilight.in               |     5 +-
+ apps/irssi/docs/help/in/exec.in                    |     7 +-
+ apps/irssi/docs/help/in/hilight.in                 |     6 +-
+ apps/irssi/docs/help/in/ignore.in                  |    12 +-
+ apps/irssi/docs/help/in/invitelist.in              |     2 +-
+ apps/irssi/docs/help/in/lastlog.in                 |     4 +-
+ apps/irssi/docs/help/in/layout.in                  |    12 +-
+ apps/irssi/docs/help/in/part.in                    |     3 +-
+ apps/irssi/docs/help/in/query.in                   |    11 +-
+ apps/irssi/docs/help/in/reload.in                  |     2 +-
+ apps/irssi/docs/help/in/save.in                    |     8 +-
+ apps/irssi/docs/help/in/script.in                  |     2 +-
+ apps/irssi/docs/help/in/scrollback.in              |    16 +-
+ apps/irssi/docs/help/in/statusbar.in               |     8 +-
+ apps/irssi/docs/help/in/unignore.in                |     3 +-
+ apps/irssi/docs/help/in/unload.in                  |     4 +-
+ apps/irssi/docs/help/in/window.in                  |    12 +-
+ apps/irssi/docs/manual.txt                         |   212 +-
+ apps/irssi/docs/perl.txt                           |    94 +-
+ apps/irssi/docs/signals.txt                        |    15 +-
+ apps/irssi/docs/startup-HOWTO.html                 |     4 +-
+ apps/irssi/glib-2.0.m4                             |   208 +
+ apps/irssi/glib.m4                                 |   196 +
+ apps/irssi/install-sh                              |   527 +
+ apps/irssi/irssi-config.in                         |     2 +-
+ apps/irssi/libtool.m4                              |  7982 ++++
+ apps/irssi/ltoptions.m4                            |   384 +
+ apps/irssi/ltsugar.m4                              |   123 +
+ apps/irssi/ltversion.m4                            |    23 +
+ apps/irssi/lt~obsolete.m4                          |    98 +
+ apps/irssi/scripts/Makefile.am                     |     2 +-
+ apps/irssi/silc.conf                               |     2 +-
+ apps/irssi/src/Makefile.am                         |     2 +-
+ apps/irssi/src/common.h                            |    24 +-
+ apps/irssi/src/core/args.c                         |    48 +-
+ apps/irssi/src/core/args.h                         |    10 +-
+ apps/irssi/src/core/channels-setup.c               |     6 +-
+ apps/irssi/src/core/channels.c                     |     8 +-
+ apps/irssi/src/core/chat-commands.c                |    62 +-
+ apps/irssi/src/core/chat-protocols.c               |     6 +-
+ apps/irssi/src/core/chatnets.c                     |    11 +-
+ apps/irssi/src/core/commands.c                     |    22 +-
+ apps/irssi/src/core/core.c                         |    84 +-
+ apps/irssi/src/core/core.h                         |     3 +-
+ apps/irssi/src/core/expandos.c                     |    20 +-
+ apps/irssi/src/core/ignore.c                       |    80 +-
+ apps/irssi/src/core/levels.c                       |    23 +-
+ apps/irssi/src/core/levels.h                       |     2 +-
+ apps/irssi/src/core/line-split.c                   |    17 +-
+ apps/irssi/src/core/log-away.c                     |     6 +-
+ apps/irssi/src/core/log.c                          |    32 +-
+ apps/irssi/src/core/masks.c                        |     6 +-
+ apps/irssi/src/core/misc.c                         |   137 +-
+ apps/irssi/src/core/misc.h                         |    75 +-
+ apps/irssi/src/core/modules-load.c                 |     8 +-
+ apps/irssi/src/core/modules.c                      |     6 +-
+ apps/irssi/src/core/net-disconnect.c               |     8 +-
+ apps/irssi/src/core/net-disconnect.h               |     4 +
+ apps/irssi/src/core/net-nonblock.c                 |    35 +-
+ apps/irssi/src/core/net-sendbuffer.c               |    52 +-
+ apps/irssi/src/core/net-sendbuffer.h               |     9 +-
+ apps/irssi/src/core/network-openssl.c              |   634 +-
+ apps/irssi/src/core/network.c                      |    69 +-
+ apps/irssi/src/core/network.h                      |     8 +-
+ apps/irssi/src/core/nick-rec.h                     |     2 +-
+ apps/irssi/src/core/nicklist.c                     |    78 +-
+ apps/irssi/src/core/nicklist.h                     |     7 +-
+ apps/irssi/src/core/nickmatch-cache.c              |     6 +-
+ apps/irssi/src/core/pidwait.c                      |    56 +-
+ apps/irssi/src/core/queries.c                      |     6 +-
+ apps/irssi/src/core/rawlog.c                       |     6 +-
+ apps/irssi/src/core/recode.c                       |   168 +-
+ apps/irssi/src/core/recode.h                       |     1 +
+ apps/irssi/src/core/server-connect-rec.h           |     1 +
+ apps/irssi/src/core/server-rec.h                   |     1 -
+ apps/irssi/src/core/servers-reconnect.c            |    24 +-
+ apps/irssi/src/core/servers-setup.c                |    35 +-
+ apps/irssi/src/core/servers-setup.h                |     2 -
+ apps/irssi/src/core/servers.c                      |    61 +-
+ apps/irssi/src/core/session.c                      |    80 +-
+ apps/irssi/src/core/session.h                      |     1 +
+ apps/irssi/src/core/settings.c                     |   123 +-
+ apps/irssi/src/core/settings.h                     |     3 +-
+ apps/irssi/src/core/signals.c                      |     6 +-
+ apps/irssi/src/core/special-vars.c                 |    39 +-
+ apps/irssi/src/core/write-buffer.c                 |     6 +-
+ apps/irssi/src/fe-common/core/Makefile.am          |     9 +-
+ apps/irssi/src/fe-common/core/autorun.c            |    56 -
+ apps/irssi/src/fe-common/core/autorun.h            |     6 -
+ apps/irssi/src/fe-common/core/chat-completion.c    |    54 +-
+ apps/irssi/src/fe-common/core/command-history.c    |     6 +-
+ apps/irssi/src/fe-common/core/command-history.h    |     2 +-
+ apps/irssi/src/fe-common/core/completion.c         |    82 +-
+ apps/irssi/src/fe-common/core/completion.h         |     2 +-
+ apps/irssi/src/fe-common/core/fe-channels.c        |   113 +-
+ apps/irssi/src/fe-common/core/fe-common-core.c     |   118 +-
+ apps/irssi/src/fe-common/core/fe-common-core.h     |     5 +
+ apps/irssi/src/fe-common/core/fe-core-commands.c   |    72 +-
+ apps/irssi/src/fe-common/core/fe-exec.c            |    57 +-
+ apps/irssi/src/fe-common/core/fe-expandos.c        |     6 +-
+ apps/irssi/src/fe-common/core/fe-help.c            |    51 +-
+ apps/irssi/src/fe-common/core/fe-ignore-messages.c |     6 +-
+ apps/irssi/src/fe-common/core/fe-ignore.c          |    14 +-
+ apps/irssi/src/fe-common/core/fe-log.c             |    80 +-
+ apps/irssi/src/fe-common/core/fe-messages.c        |    73 +-
+ apps/irssi/src/fe-common/core/fe-modules.c         |    16 +-
+ apps/irssi/src/fe-common/core/fe-queries.c         |     8 +-
+ apps/irssi/src/fe-common/core/fe-recode.c          |    56 +-
+ apps/irssi/src/fe-common/core/fe-server.c          |    34 +-
+ apps/irssi/src/fe-common/core/fe-settings.c        |   139 +-
+ apps/irssi/src/fe-common/core/fe-windows.c         |    13 +-
+ apps/irssi/src/fe-common/core/formats.c            |    96 +-
+ apps/irssi/src/fe-common/core/formats.h            |     4 +-
+ apps/irssi/src/fe-common/core/hilight-text.c       |    38 +-
+ apps/irssi/src/fe-common/core/keyboard.c           |    34 +-
+ apps/irssi/src/fe-common/core/module-formats.c     |    22 +-
+ apps/irssi/src/fe-common/core/module-formats.h     |     4 +-
+ apps/irssi/src/fe-common/core/printtext.c          |    41 +-
+ apps/irssi/src/fe-common/core/printtext.h          |     1 +
+ apps/irssi/src/fe-common/core/themes.c             |    11 +-
+ apps/irssi/src/fe-common/core/translation.c        |   152 -
+ apps/irssi/src/fe-common/core/translation.h        |    12 -
+ apps/irssi/src/fe-common/core/utf8.c               |   251 +-
+ apps/irssi/src/fe-common/core/utf8.h               |    25 +-
+ apps/irssi/src/fe-common/core/wcwidth.c            |   220 +
+ apps/irssi/src/fe-common/core/window-activity.c    |    25 +-
+ apps/irssi/src/fe-common/core/window-commands.c    |   103 +-
+ apps/irssi/src/fe-common/core/window-items.c       |    41 +-
+ apps/irssi/src/fe-common/core/windows-layout.c     |    38 +-
+ apps/irssi/src/fe-text/Makefile.am                 |    14 +-
+ apps/irssi/src/fe-text/cuix-api.c                  |   386 -
+ apps/irssi/src/fe-text/cuix-api.h                  |    68 -
+ apps/irssi/src/fe-text/cuix-lib.c                  |   139 -
+ apps/irssi/src/fe-text/cuix-lib.h                  |     9 -
+ apps/irssi/src/fe-text/cuix.c                      |    39 -
+ apps/irssi/src/fe-text/cuix.h                      |    11 -
+ apps/irssi/src/fe-text/gui-entry.c                 |   173 +-
+ apps/irssi/src/fe-text/gui-entry.h                 |     1 +
+ apps/irssi/src/fe-text/gui-expandos.c              |     7 +-
+ apps/irssi/src/fe-text/gui-printtext.c             |    92 +-
+ apps/irssi/src/fe-text/gui-readline.c              |   365 +-
+ apps/irssi/src/fe-text/gui-windows.c               |    10 +-
+ apps/irssi/src/fe-text/lastlog.c                   |    75 +-
+ apps/irssi/src/fe-text/mainwindow-activity.c       |    10 +-
+ apps/irssi/src/fe-text/mainwindows-layout.c        |     6 +-
+ apps/irssi/src/fe-text/mainwindows.c               |    55 +-
+ apps/irssi/src/fe-text/module-formats.c            |     6 +-
+ apps/irssi/src/fe-text/silc.c                      |    68 +-
+ apps/irssi/src/fe-text/statusbar-config.c          |    33 +-
+ apps/irssi/src/fe-text/statusbar-item.h            |    17 +
+ apps/irssi/src/fe-text/statusbar-items.c           |   126 +-
+ apps/irssi/src/fe-text/statusbar.c                 |    89 +-
+ apps/irssi/src/fe-text/statusbar.h                 |    11 +-
+ apps/irssi/src/fe-text/term-curses.c               |    52 +-
+ apps/irssi/src/fe-text/term-dummy.c                |     6 +-
+ apps/irssi/src/fe-text/term-terminfo.c             |   205 +-
+ apps/irssi/src/fe-text/term.c                      |    24 +-
+ apps/irssi/src/fe-text/term.h                      |    13 +-
+ apps/irssi/src/fe-text/terminfo-core.c             |   177 +-
+ apps/irssi/src/fe-text/terminfo-core.h             |    12 +-
+ apps/irssi/src/fe-text/textbuffer-commands.c       |   124 +-
+ apps/irssi/src/fe-text/textbuffer-reformat.c       |   281 -
+ apps/irssi/src/fe-text/textbuffer-reformat.h       |     9 -
+ apps/irssi/src/fe-text/textbuffer-view.c           |   163 +-
+ apps/irssi/src/fe-text/textbuffer-view.h           |     1 +
+ apps/irssi/src/fe-text/textbuffer.c                |   232 +-
+ apps/irssi/src/fe-text/textbuffer.h                |    28 +-
+ apps/irssi/src/lib-config/Makefile.am              |     4 +-
+ apps/irssi/src/lib-config/get.c                    |    51 +-
+ apps/irssi/src/lib-config/iconfig.h                |    27 +-
+ apps/irssi/src/lib-config/parse.c                  |    27 +-
+ apps/irssi/src/lib-config/set.c                    |     9 +-
+ apps/irssi/src/lib-config/write.c                  |    49 +-
+ apps/irssi/src/lib-popt/.cvsignore                 |     7 -
+ apps/irssi/src/lib-popt/Makefile.am                |    11 -
+ apps/irssi/src/lib-popt/findme.c                   |    54 -
+ apps/irssi/src/lib-popt/findme.h                   |    10 -
+ apps/irssi/src/lib-popt/popt.c                     |   594 -
+ apps/irssi/src/lib-popt/popt.h                     |   123 -
+ apps/irssi/src/lib-popt/poptconfig.c               |   144 -
+ apps/irssi/src/lib-popt/popthelp.c                 |   301 -
+ apps/irssi/src/lib-popt/poptint.h                  |    54 -
+ apps/irssi/src/lib-popt/poptparse.c                |    98 -
+ apps/irssi/src/perl/Makefile.am                    |    43 +-
+ apps/irssi/src/perl/common/Core.xs                 |    99 +-
+ apps/irssi/src/perl/common/Expando.xs              |    12 +-
+ apps/irssi/src/perl/common/Settings.xs             |     3 -
+ apps/irssi/src/perl/get-signals.pl                 |    15 +-
+ apps/irssi/src/perl/irssi-core.pl                  |    44 +-
+ apps/irssi/src/perl/irssi-core.pl.h                |    44 +-
+ apps/irssi/src/perl/module-formats.c               |     6 +-
+ apps/irssi/src/perl/module.h                       |     9 +-
+ apps/irssi/src/perl/perl-common.c                  |    27 +-
+ apps/irssi/src/perl/perl-common.h                  |     6 -
+ apps/irssi/src/perl/perl-core.c                    |    30 +-
+ apps/irssi/src/perl/perl-fe.c                      |     8 +-
+ apps/irssi/src/perl/perl-signals.c                 |   181 +-
+ apps/irssi/src/perl/perl-signals.h                 |     3 +
+ apps/irssi/src/perl/perl-sources.c                 |    12 +-
+ apps/irssi/src/perl/textui/TextBuffer.xs           |    49 -
+ apps/irssi/src/perl/textui/TextBufferView.xs       |    23 -
+ apps/irssi/src/perl/textui/TextUI.xs               |    38 +-
+ apps/irssi/src/perl/textui/module.h                |     1 +
+ apps/irssi/src/perl/ui/Themes.xs                   |    20 +-
+ apps/irssi/src/perl/ui/Window.xs                   |    11 +
+ apps/irssi/src/silc/core/client_ops.c              |    31 +-
+ apps/irssi/src/silc/core/silc-core.c               |   284 +-
+ apps/irssi/src/silc/core/silc-core.h               |     1 -
+ apps/irssi/src/silc/core/silc-expandos.c           |     2 +-
+ apps/irssi/src/silc/core/silc-servers.c            |    12 +-
+ apps/irssi/syntax.pl                               |    33 +-
+ configure.ad                                       |     2 +-
+ distdir/pre-run                                    |     7 +-
+ doc/Makefile.ad                                    |     8 +-
+ 251 files changed, 54544 insertions(+), 7975 deletions(-)
+ delete mode 100644 README.CVS
+ delete mode 100644 apps/irssi/.cvsignore
+ create mode 100644 apps/irssi/COPYING
+ create mode 100755 apps/irssi/build-aux/depcomp
+ create mode 100755 apps/irssi/build-aux/install-sh
+ create mode 100755 apps/irssi/build-aux/missing
+ create mode 100644 apps/irssi/glib-2.0.m4
+ create mode 100644 apps/irssi/glib.m4
+ create mode 100755 apps/irssi/install-sh
+ create mode 100644 apps/irssi/libtool.m4
+ create mode 100644 apps/irssi/ltoptions.m4
+ create mode 100644 apps/irssi/ltsugar.m4
+ create mode 100644 apps/irssi/ltversion.m4
+ create mode 100644 apps/irssi/lt~obsolete.m4
+ delete mode 100644 apps/irssi/src/fe-common/core/autorun.c
+ delete mode 100644 apps/irssi/src/fe-common/core/autorun.h
+ delete mode 100644 apps/irssi/src/fe-common/core/translation.c
+ delete mode 100644 apps/irssi/src/fe-common/core/translation.h
+ create mode 100644 apps/irssi/src/fe-common/core/wcwidth.c
+ delete mode 100644 apps/irssi/src/fe-text/cuix-api.c
+ delete mode 100644 apps/irssi/src/fe-text/cuix-api.h
+ delete mode 100644 apps/irssi/src/fe-text/cuix-lib.c
+ delete mode 100644 apps/irssi/src/fe-text/cuix-lib.h
+ delete mode 100644 apps/irssi/src/fe-text/cuix.c
+ delete mode 100644 apps/irssi/src/fe-text/cuix.h
+ create mode 100644 apps/irssi/src/fe-text/statusbar-item.h
+ delete mode 100644 apps/irssi/src/fe-text/textbuffer-reformat.c
+ delete mode 100644 apps/irssi/src/fe-text/textbuffer-reformat.h
+ delete mode 100644 apps/irssi/src/lib-popt/.cvsignore
+ delete mode 100644 apps/irssi/src/lib-popt/Makefile.am
+ delete mode 100644 apps/irssi/src/lib-popt/findme.c
+ delete mode 100644 apps/irssi/src/lib-popt/findme.h
+ delete mode 100644 apps/irssi/src/lib-popt/popt.c
+ delete mode 100644 apps/irssi/src/lib-popt/popt.h
+ delete mode 100644 apps/irssi/src/lib-popt/poptconfig.c
+ delete mode 100644 apps/irssi/src/lib-popt/popthelp.c
+ delete mode 100644 apps/irssi/src/lib-popt/poptint.h
+ delete mode 100644 apps/irssi/src/lib-popt/poptparse.c

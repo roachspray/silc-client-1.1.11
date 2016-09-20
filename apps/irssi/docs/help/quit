@@ -1,0 +1,9 @@
+
+QUIT %|[<message>]
+
+This ends your session.
+
+If a quit message is supplied, it will be displayed to everyone on all channels you were on before quitting. If quit message isn't specified, the text "leaving" is used.
+
+See also: EXIT
+

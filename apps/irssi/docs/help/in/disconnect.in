@@ -1,0 +1,7 @@
+
+@SYNTAX:disconnect@
+
+Disconnects from the specified server.
+
+See also: CONNECT, SERVER
+

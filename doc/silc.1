@@ -1,0 +1,229 @@
+.TH "SILC" "1" "December 7 2002" "silc\-client" "silc\-client"
+
+.PP 
+.SH "NAME"
+silc \- client for SILC, a secure and flexible conferencing network
+.PP 
+.SH "SYNOPSIS"
+\fBsilc\fP \fB[\fP \-S \fIfile\fP | \-d | \-C | \-c \fIhost\fP | \-w \fIpass\fP | 
+\-p \fIport\fP | \-! | \-n \fInick\fP | \-h \fIhost\fP | \-v | \-? \fB]\fP
+.PP 
+.SH "DESCRIPTION"
+SILC (Secure Internet Live Conferencing) is a secure conferencing network\&.
+\fBSilc\fP is the SILC client which is used to connect to SILC server and
+the SILC network\&.  The silc client resembles IRC clients to make the
+using easier for new users\&.
+.PP 
+\fBSilc\fP supports sending of practically any kind of messages in addition
+of normal text messages in the SILC network\&.  This includes multimedia
+messages like images, video and audio stream\&.  The session to SILC server
+is secured with session key, channel messages are protected with channel
+key and private messages with session keys\&.  It is also possible to use
+private channel keys and private message keys in addition to server
+generated keys\&.  It is also possible to digitally sign all messages\&.
+.PP 
+\fBSilc\fP supports \fIpassphrase\fP authentication and public key authentication
+based on \fIdigital signatures\fP, when connecting to SILC server\&.  \fBSilc\fP
+also supports key exchange (key agreement) between other \fBSilc\fP users in
+the SILC network to negotiate secret key material\&.  This key material then
+can be used to secure for example private messages\&.  It is also possible to
+exchange public keys and certificates in the SILC network between clients
+and servers\&.
+.PP 
+The \fBsilc\fP also supports \fIdetaching\fP from the SILC network by closing
+the connection to the server but without quitting from the network\&.  Next
+time the \fBsilc\fP connects to the server it \fIresumes\fP the session in the
+SILC network\&.  During the detaching the user remains in the network and other
+users may query the user information and see that user is in network but
+currently detached\&.  Messages sent to user while being detached are
+dropped by the server\&.  When resuming is over the user has automatically
+same nickname than before detaching and remains on all channels, and it
+seems like user never left the network\&.
+.PP 
+The \fBsilc\fP also supports creation of \fIfriends\fP list, which is kind of
+a buddy list familiar from IM (Instant Messaging) clients\&.  By using the
+\fBWHOIS\fP SILC command with \fI\-details\fP option it is possible to fetch the
+user\(cq\&s information such as their public keys and certificates, business
+card, pictures, and other information and save them to the friends list\&.
+The friends list is located at \fB~/\&.silc/friends/\fP directory\&.
+.PP 
+The SILC public key and private key pair is used to authenticate the user
+to the SILC server when connecting a server\&.  This key pair is created
+automatically when the \fBsilc\fP is run for the first time\&.  It can also
+be created with \fB\-C\fP option\&.
+.PP 
+When connecting for the first time to SILC server, user will be asked to
+accept the server\(cq\&s public key\&.  When key is accepted the \fBsilc\fP saves
+the public key for future into \fB~/\&.silc/serverkeys/\fP directory\&.  The
+next time user connects to same server the public key is verified against
+the saved public key\&.  The purpose of this public key saving is to avoid
+man\-in\-the\-middle attacks which could be possible if the key would have
+to be verified every time user connects to the server\&.
+.PP 
+.SH "OPTIONS"
+\fB\-c\fP \fIhost\fP      Connect to given host
+.PP 
+\fB\-p\fP \fIport\fP      Connect to \fIport\fP
+.PP 
+\fB\-C\fP           Create new public key pair
+.PP 
+\fB\-P\fP           Change the passphrase of the private key file
+.PP 
+\fB\-S\fP \fIkeyfile\fP   Display the contents of given SILC public key from file
+.PP 
+\fB\-n\fP \fInick\fP      Specify what nick to use
+.PP 
+\fB\-h\fP \fIhost\fP      Give \fIhost\fP as your hostname
+.PP 
+\fB\-w\fP \fIpass\fP      Use \fIpass\fP as password for connection
+.PP 
+\fB\-d\fP \fIstring\fP    Enable debugging
+.PP 
+\fB\-v\fP           Display client version
+.PP 
+\fB\-!\fP           Do not autoconnect
+.PP 
+\fB\-?\fP           Display client help message
+.PP 
+.SH "LONG OPTIONS"
+
+.PP 
+\fB\-\-connect\fP=\fISERVER\fP     Same as \fB\-c\fP\&.
+.PP 
+\fB\-\-port\fP=\fIPORT\fP          Same as \fB\-p\fP\&.
+.PP 
+\fB\-\-home\fP=\fIPATH\fP          Client home dir (\fI~/\&.silc\fP)\&.
+.PP 
+\fB\-\-config\fP=\fIPATH\fP        Configuration file location (\fI~/\&.silc/silc\&.conf\fP)\&.
+.PP 
+\fB\-\-list\-ciphers\fP       List supported ciphers\&.
+.PP 
+\fB\-\-list\-hash\-funcs\fP    List supported hash functions\&.
+.PP 
+\fB\-\-list\-hmacs\fP         List supported HMACs\&.
+.PP 
+\fB\-\-list\-pkcs\fP          List supported PKCSs\&.
+.PP 
+\fB\-\-create\-key\-pair\fP    Same as \fB\-C\fP\&.
+.PP 
+\fB\-\-passphrase\-change\fP  Same as \fB\-P\fP\&.
+.PP 
+\fB\-\-nick\fP=\fINICK\fP          Same as \fB\-n\fP\&.
+.PP 
+\fB\-\-hostname\fP=\fIHOST\fP      Same as \fB\-h\fP\&.
+.PP 
+\fB\-\-password\fP=\fIPASS\fP      Same as \fB\-w\fP\&.
+.PP 
+\fB\-\-debug\fP=\fISTRING\fP       Same as \fB\-d\fP, limit to messages *\fISTRING\fP*\&.
+.PP 
+\fB\-\-dummy\fP              Use dummy terminal mode\&.
+.PP 
+\fB\-\-version\fP            Same as \fB\-v\fP\&.
+.PP 
+\fB\-\-noconnect\fP          Same as \fB\-!\fP\&.
+.PP 
+\fB\-\-help\fP               Same as \fB\-?\fP\&.
+.PP 
+\fB\-\-usage\fP              Display very brief usage summary\&.
+.PP 
+.SH "KEY GENERATION"
+When generating key pair(s) for silc (\fB\-C\fP), the following extra
+switches apply:
+.PP 
+\fB\-\-pkcs\fP=\fIPKCS\fP       Set the public key algorithm of key pair\&.  For example \fBrsa\fP\&.
+.PP 
+\fB\-\-bits\fP=\fIVALUE\fP       Set the length of public key pair, in bits\&.
+.PP 
+.SH "CONFIGURATION FILE"
+The \fBsilc\fP configuration file is \fB~/\&.silc/silc\&.conf\fP and can be used
+to configure the behaviour of the client\&.  The configuration file format
+is equivalent to Irssi IRC client\(cq\&s configuration file\&.  See the 
+documentation for the configuration file at \fBhttp://irssi\&.org\fP\&.
+.PP 
+There are a few \fBsilc\fP configuration settings in \fIsilc\&.conf\fP which
+can be configured in \fIsettings\fP section under \fI\(dq\&server\(dq\&\fP block\&.
+They can be set also with the \fB/SET\fP command in the \fBsilc\fP client\&.
+.PP 
+\fBcrypto_default_cipher\fP
+.RS 
+The default cipher to use to secure the session to the server\&.
+Values can be for example \fBaes\-256\-cbc\fP, \fBaes\-192\-cbc\fP, \fBaes\-128\-cbc\fP,
+\fBtwofish\-256\-cbc\fP, \fBtwofish\-192\-cbc\fP, \fBtwofish\-128\-cbc\fP\&.
+.RE
+
+.PP 
+\fBcrypto_default_hash\fP
+.RS 
+The default hash function to use in session with the server\&. Values
+can be \fBsha1\fP or \fBmd5\fP\&.
+.RE
+
+.PP 
+\fBcrypto_default_hmac\fP
+.RS 
+The default HMAC to be use in session with the server\&.  Value can
+be \fBhmac\-sha1\-96\fP, \fBhmac\-md5\-96\fP, \fBhmac\-sha1\fP or \fBhmac\-md5\fP\&.
+.RE
+
+.PP 
+.SH "FILES"
+\fB~/\&.silc/silc\&.conf\fP
+.RS 
+Client\(cq\&s configuration file
+.RE
+
+.PP 
+\fB~/\&.silc/public_key\&.pub\fP
+.RS 
+The SILC public key of the user
+.RE
+
+.PP 
+\fB~/\&.silc/private_key\&.pub\fP
+.RS 
+The SILC private key of the user
+.RE
+
+.PP 
+\fB~/\&.silc/clientkeys/\fP
+.RS 
+The directory holding the public keys of other users the user has
+accepted and trusted in the SILC network\&.  The public keys can be received
+with \fBGETKEY\fP SILC command or during key agreement between two users\&.
+.RE
+
+.PP 
+\fB~/\&.silc/serverkeys/\fP
+.RS 
+The directory holding the public keys of servers the user has accepted
+and trusted when connecting to a server\&.
+.RE
+
+.PP 
+\fB~/\&.silc/friends/\fP
+.RS 
+The directory holding the information of \fIfriends\fP that user has\&.
+User can create a friend list with \fBWHOIS \-details\fP SILC command\&.  This
+directory holds the friends\(cq\& public keys, business cards, pictures, and
+other information\&.
+.RE
+
+.PP 
+.SH "SEE ALSO"
+\fBsilcd(8)\fP \fBsilcd\&.conf(5)\fP
+.PP 
+.SH "NETWORK RESOURCES"
+Homepage: \fBhttp://silcnet\&.org\fP
+.PP 
+SILC Client is based on Irssi IRC client: \fBhttp://irssi\&.org\fP
+.PP 
+User\(cq\&s guide: \fBhttp://silcnet\&.org/docs/\fP
+.PP 
+.SH "AUTHOR"
+SILC is designed and written by Pekka Riikonen <priikone@iki\&.fi> and rest
+of the SILC Project\&.
+.PP 
+This manpage was written by Mika \(cq\&Bostik\(cq\& Boström <bostik@lut\&.fi>
+.PP 
+See \fBCREDITS\fP for full list of contributors\&.
+.PP 

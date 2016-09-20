@@ -1,0 +1,9 @@
+
+LISTKEYS %|[-servers] [-clients] [<public key file>]
+
+Lists all locally stored public keys.
+
+The options -servers and -clients control whether only server or only client keys are shown.
+
+If the filename of a public key is given, details will be displayed about the stored public key.
+

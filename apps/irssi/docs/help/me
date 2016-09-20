@@ -1,0 +1,7 @@
+
+ME %|<message>
+
+Sends an ACTION channel message to the current channel. For example:  /ME sits back.
+
+See also: ACTION
+

@@ -1,0 +1,7 @@
+
+DISCONNECT %|*|<tag> [<message>]
+
+Disconnects from the specified server.
+
+See also: CONNECT, SERVER
+
